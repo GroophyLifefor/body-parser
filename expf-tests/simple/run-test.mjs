@@ -6,6 +6,11 @@ function createSimpleServer(lib) {
   const app = express();
   app.use(bodyParser.json());
 
+  app.post('/raw', (req, res) => {
+    const rawData = req.body;
+    res.send(`Received raw data: ${JSON.stringify(rawData)}`);
+  });
+
   return app;
 }
 
