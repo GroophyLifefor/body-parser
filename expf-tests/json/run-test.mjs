@@ -14,7 +14,7 @@ function createSimpleServer(test) {
   return {
     app,
     autocannonConfig: {
-      url: `${this.url}/json`,
+      url: `${test.url}/json`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

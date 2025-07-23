@@ -32,7 +32,9 @@ class PerfTestTemplate {
 
   async startServer(serverFactory) {
     await this.loadLib();
-    this.app = serverFactory(this);
+    const resp = serverFactory(this);
+    this.app = resp.app;
+    this.autocannonTestConfig = resp.autocannonConfig;
     this.server = this.app.listen(this.config.port);
     await new Promise((resolve) => this.server.on('listening', resolve));
     console.log(`Server is running at ${this.url}`);
@@ -41,7 +43,7 @@ class PerfTestTemplate {
   async run() {
     try {
       const result = await autocannon(
-        Object.assign(defaultAutocannonConfig, this.app.autocannonConfig)
+        Object.assign(defaultAutocannonConfig, this.autocannonTestConfig)
       );
 
       console.log(autocannon.printResult(result));
