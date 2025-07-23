@@ -9,6 +9,7 @@ class PerfTestTemplate {
     this.config = config;
     this.url = `http://localhost:${config.port}`;
     this.lib = null;
+    this.app = null;
 
     console.log(`Running performance test with label: ${label}`);
   }
@@ -25,8 +26,9 @@ class PerfTestTemplate {
 
   async startServer(serverFactory) {
     await this.loadLib();
-    this.server = serverFactory(this.lib);
-    await new Promise((resolve) => this.server.listen(this.config.port, resolve));
+    this.app = serverFactory(this.lib);
+    this.server = this.app.listen(this.config.port);
+    await new Promise((resolve) => this.server.on('listening', resolve));
     console.log(`Server is running at ${this.url}`);
   }
 
