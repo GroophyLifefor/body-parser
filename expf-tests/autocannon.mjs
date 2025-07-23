@@ -38,9 +38,9 @@ class PerfTestTemplate {
         url: `${this.url}/raw`,
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/octet-stream'
         },
-        body: JSON.stringify({ test: 'data', timestamp: Date.now() }),
+        body: `test data with timestamp: ${Date.now()}`,
         connections: 10,
         duration: 30, // x seconds
       });
