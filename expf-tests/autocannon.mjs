@@ -35,12 +35,12 @@ class PerfTestTemplate {
   async run() {
     try {
       const result = await autocannon({
-        url: `${this.url}/raw`,
+        url: `${this.url}/json`,
         method: 'POST',
         headers: {
-          'Content-Type': 'application/octet-stream'
+          'Content-Type': 'application/json',
         },
-        body: `test data with timestamp: ${Date.now()}`,
+        body: JSON.stringify({ test: 'data', timestamp: Date.now() }),
         connections: 10,
         duration: 30, // x seconds
       });
