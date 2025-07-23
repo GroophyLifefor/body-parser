@@ -4,6 +4,7 @@
   "main": "run-test.mjs",
   "type": "module",
   "dependencies": {
-    "autocannon": "^8.0.0"
+    "autocannon": "^8.0.0",
+    "express": "^5.1.0"
   }
 }
