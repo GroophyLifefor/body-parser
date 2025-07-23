@@ -42,7 +42,7 @@ class PerfTestTemplate {
         },
         body: JSON.stringify({ test: 'data', timestamp: Date.now() }),
         connections: 10,
-        duration: 30, // x seconds
+        duration: 10, // x seconds
       });
 
       console.log(autocannon.printResult(result));
