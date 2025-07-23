@@ -2,12 +2,18 @@ import autocannon from 'autocannon';
 import { argv } from 'process';
 import { pathToFileURL } from 'url';
 
+let defaultAutocannonConfig = {
+  connections: 10,
+  duration: 10, // x seconds
+};
+
 class PerfTestTemplate {
   constructor(label, config) {
     this.label = label;
     this.server = null;
     this.config = config;
     this.url = `http://localhost:${config.port}`;
+    defaultAutocannonConfig.url = this.url;
     this.lib = null;
     this.app = null;
 
@@ -26,7 +32,7 @@ class PerfTestTemplate {
 
   async startServer(serverFactory) {
     await this.loadLib();
-    this.app = serverFactory(this.lib);
+    this.app = serverFactory(this);
     this.server = this.app.listen(this.config.port);
     await new Promise((resolve) => this.server.on('listening', resolve));
     console.log(`Server is running at ${this.url}`);
@@ -34,16 +40,9 @@ class PerfTestTemplate {
 
   async run() {
     try {
-      const result = await autocannon({
-        url: `${this.url}/json`,
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ test: 'data', timestamp: Date.now() }),
-        connections: 10,
-        duration: 10, // x seconds
-      });
+      const result = await autocannon(
+        Object.assign(defaultAutocannonConfig, this.app.autocannonConfig)
+      );
 
       console.log(autocannon.printResult(result));
       return result;
