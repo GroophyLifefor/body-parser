@@ -32,6 +32,18 @@ jobs:
         REPOSITORY: ${{ github.event.repository.name }}
       volumes:
         - ${{ github.workspace }}:/app
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: /app
+
     steps:
-      - name: Check for dockerenv file
-        run: (ls /.dockerenv && echo Found dockerenv) || (echo No dockerenv)
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run performance tests
+        run: node /runner/run-tests.mjs
